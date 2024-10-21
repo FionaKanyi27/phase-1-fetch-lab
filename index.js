@@ -1,17 +1,22 @@
 function fetchBooks() {
-  // To pass the tests, don't forget to return your fetch!
-  
+  return fetch("https://anapioficeandfire.com/api/books")
+    .then((resp) => resp.json())  // Convert the response to JSON
+    .then((data) => renderBooks(data));  // Pass the data to renderBooks
 }
 
 function renderBooks(books) {
-  const main = document.querySelector('main');
-  books.forEach(book => {
-    const h2 = document.createElement('h2');
-    h2.innerHTML = book.name;
-    main.appendChild(h2);
-  });
+  const bookList = document.getElementById("book-list");
+  // Check if bookList is not null
+  if (bookList) {
+    books.forEach((book) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = book.name; // Assuming the book object has a 'name' property
+      bookList.appendChild(listItem);
+    });
+  } else {
+    console.error("Book list element not found in the DOM.");
+  }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  fetchBooks();
-});
+// Call fetchBooks when the DOM content is loaded
+document.addEventListener("DOMContentLoaded", fetchBooks);
